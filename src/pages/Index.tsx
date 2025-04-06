@@ -102,7 +102,7 @@ const Index = () => {
                   <SelectValue placeholder="Filter by country" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Countries</SelectItem>
+                  <SelectItem value="all-countries">All Countries</SelectItem>
                   {teams.map((team) => (
                     <SelectItem key={team.id} value={team.name}>
                       {team.name}
