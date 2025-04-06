@@ -3,6 +3,7 @@ import { Player } from "@/types";
 import { Badge } from "lucide-react";
 import QRCode from "./QRCode";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 interface PlayerCardProps {
   player: Player;
@@ -10,6 +11,8 @@ interface PlayerCardProps {
 }
 
 const PlayerCard = ({ player, className }: PlayerCardProps) => {
+  const [imageError, setImageError] = useState(false);
+  
   const getPositionAbbreviation = (position: string) => {
     const posMap: Record<string, string> = {
       "Forward": "FW",
@@ -34,6 +37,13 @@ const PlayerCard = ({ player, className }: PlayerCardProps) => {
 
   // Create a URL-friendly player name for QR code
   const playerUrlData = `https://worldcup.example/player/${player.id}/${encodeURIComponent(player.name)}`;
+  
+  // Generate a placeholder image URL based on player's name and position for consistent results
+  const getPlayerImageUrl = () => {
+    // Using a name hash to get consistent images for the same player
+    const nameHash = player.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return `https://source.unsplash.com/300x400/?football,player,${player.position.toLowerCase()}`;
+  };
 
   return (
     <div 
@@ -115,11 +125,21 @@ const PlayerCard = ({ player, className }: PlayerCardProps) => {
         </div>
       </div>
       
-      {/* Player Image Placeholder */}
-      <div className="h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-        <div className="text-gray-400 text-6xl">
-          {getPositionAbbreviation(player.position)}
-        </div>
+      {/* Player Image */}
+      <div className="h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden">
+        {imageError ? (
+          <div className="text-gray-400 text-6xl">
+            {getPositionAbbreviation(player.position)}
+          </div>
+        ) : (
+          <img 
+            src={getPlayerImageUrl()}
+            alt={player.name}
+            className="w-full h-full object-cover"
+            onError={() => setImageError(true)}
+            loading="lazy"
+          />
+        )}
       </div>
       
       {/* Player Name */}

@@ -5,15 +5,23 @@ import { getPlayerById } from "@/services/playerService";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import PlayerCard from "@/components/PlayerCard";
+import { useState } from "react";
 
 const PlayerDetails = () => {
   const { id } = useParams<{ id: string }>();
+  const [imageError, setImageError] = useState(false);
   
   const { data: player, isLoading, error } = useQuery({
     queryKey: ["player", id],
     queryFn: () => getPlayerById(id || ""),
     enabled: !!id,
   });
+
+  // Generate a player image URL
+  const getPlayerImageUrl = () => {
+    if (!player) return '';
+    return `https://source.unsplash.com/600x800/?football,player,${player.position.toLowerCase()}`;
+  };
 
   if (isLoading) {
     return (
@@ -56,7 +64,18 @@ const PlayerDetails = () => {
 
         <div className="w-full md:w-1/2">
           <h1 className="text-3xl font-bold text-sport-navy mb-2">{player.name}</h1>
-          <h2 className="text-xl text-sport-pink mb-6">{player.country} - #{player.squad_number}</h2>
+          <h2 className="text-xl text-sport-pink mb-4">{player.country} - #{player.squad_number}</h2>
+          
+          {!imageError && (
+            <div className="mb-6 rounded-lg overflow-hidden">
+              <img 
+                src={getPlayerImageUrl()}
+                alt={player.name}
+                className="w-full h-60 object-cover object-top"
+                onError={() => setImageError(true)}
+              />
+            </div>
+          )}
           
           <div className="space-y-4">
             <div>
