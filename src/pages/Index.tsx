@@ -2,22 +2,42 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { getPlayers, getTeams } from "@/services/playerService";
+import { getPlayers, getTeams, seedPlayersToSupabase } from "@/services/playerService";
 import { Player, Team } from "@/types";
 import PlayerCard from "@/components/PlayerCard";
 import { Loader2, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [filteredPlayers, setFilteredPlayers] = useState<Player[]>([]);
 
+  // Run the seed function on first load
+  useEffect(() => {
+    const initializeData = async () => {
+      try {
+        await seedPlayersToSupabase();
+      } catch (error) {
+        console.error("Failed to seed player data:", error);
+        toast({
+          title: "Data Loading Issue",
+          description: "There was a problem loading player data. Some features may be limited.",
+          variant: "destructive",
+        });
+      }
+    };
+
+    initializeData();
+  }, []);
+
   const { 
     data: players = [], 
-    isLoading: playersLoading 
+    isLoading: playersLoading,
+    error: playersError
   } = useQuery({
     queryKey: ["players"],
     queryFn: getPlayers
@@ -30,6 +50,18 @@ const Index = () => {
     queryKey: ["teams"],
     queryFn: getTeams
   });
+
+  // Handle errors with player data
+  useEffect(() => {
+    if (playersError) {
+      console.error("Error loading players:", playersError);
+      toast({
+        title: "Error",
+        description: "Failed to load player data. Please try again later.",
+        variant: "destructive",
+      });
+    }
+  }, [playersError]);
 
   useEffect(() => {
     if (players) {
