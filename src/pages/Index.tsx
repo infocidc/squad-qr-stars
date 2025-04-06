@@ -74,7 +74,7 @@ const Index = () => {
       <header className="bg-sport-navy text-white py-6">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl md:text-4xl font-bold text-center">
-            World Cup 2018 <span className="text-sport-pink">Players</span>
+            CIDC - X73 - <span className="text-sport-pink">Cloud Computing</span>
           </h1>
           <p className="text-center text-gray-300 mt-2">
             Complete guide to all players with individual QR codes
@@ -160,7 +160,7 @@ const Index = () => {
       <footer className="bg-sport-navy text-white py-6 mt-12">
         <div className="container mx-auto px-4 text-center">
           <p className="text-sm text-gray-300">
-            World Cup 2018 Players Database - Data referenced from The Guardian
+            CIDC - X73 - Cloud Computing - Data referenced from The Guardian
           </p>
           <p className="text-xs text-gray-400 mt-2">
             &copy; {new Date().getFullYear()} Football Squad Cards

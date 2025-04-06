@@ -113,7 +113,7 @@ const PlayerDetails = () => {
             <div>
               <h3 className="text-sm uppercase font-semibold text-sport-gray">About</h3>
               <p className="text-base mt-1">
-                {player.name} is an international footballer representing {player.country} at the 2018 FIFA World Cup. 
+                {player.name} is an international footballer representing {player.country} at the CIDC - X73 - Cloud Computing database. 
                 They currently play for {player.club} and have made {player.caps} appearances for their national team, 
                 scoring {player.goals} goals.
               </p>
