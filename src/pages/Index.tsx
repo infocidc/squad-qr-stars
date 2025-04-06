@@ -46,7 +46,7 @@ const Index = () => {
       }
       
       // Filter by country
-      if (selectedCountry) {
+      if (selectedCountry && selectedCountry !== "all-countries") {
         result = result.filter(player => player.country === selectedCountry);
       }
       
