@@ -5,6 +5,7 @@ import { Player } from "@/types";
 const usePlayerFilters = (players: Player[]) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCountry, setSelectedCountry] = useState<string>("");
+  const [selectedPosition, setSelectedPosition] = useState<string>("");
   const [filteredPlayers, setFilteredPlayers] = useState<Player[]>([]);
 
   useEffect(() => {
@@ -26,13 +27,19 @@ const usePlayerFilters = (players: Player[]) => {
         result = result.filter(player => player.country === selectedCountry);
       }
       
+      // Filter by position
+      if (selectedPosition && selectedPosition !== "all-positions") {
+        result = result.filter(player => player.position === selectedPosition);
+      }
+      
       setFilteredPlayers(result);
     }
-  }, [players, searchTerm, selectedCountry]);
+  }, [players, searchTerm, selectedCountry, selectedPosition]);
 
   const handleReset = () => {
     setSearchTerm("");
     setSelectedCountry("");
+    setSelectedPosition("");
   };
 
   return {
@@ -40,6 +47,8 @@ const usePlayerFilters = (players: Player[]) => {
     setSearchTerm,
     selectedCountry,
     setSelectedCountry,
+    selectedPosition,
+    setSelectedPosition,
     filteredPlayers,
     handleReset
   };
