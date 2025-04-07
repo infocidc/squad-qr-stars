@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { getPlayers, getTeams, seedPlayersToSupabase } from "@/services/playerService";
+import { getPlayers, getTeams, seedPlayersToSupabase } from "@/services";
 import { Player, Team } from "@/types";
 import PlayerCard from "@/components/PlayerCard";
 import { Loader2, Search } from "lucide-react";
