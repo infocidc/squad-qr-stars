@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getPlayers, getTeams, seedPlayersToSupabase } from "@/services";
 import { toast } from "@/hooks/use-toast";
@@ -10,11 +10,7 @@ import PageFooter from "@/components/PageFooter";
 import PlayerFilters from "@/components/PlayerFilters";
 import PlayerList from "@/components/PlayerList";
 
-const PLAYERS_PER_PAGE = 20;
-
 const Index = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-
   // Run the seed function on first load
   useEffect(() => {
     const initializeData = async () => {
@@ -62,18 +58,11 @@ const Index = () => {
     }
   }, [playersError]);
 
-  // Reset to page 1 when filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [filteredPlayers.length]);
-
   const {
     searchTerm,
     setSearchTerm,
     selectedCountry,
     setSelectedCountry,
-    selectedPosition,
-    setSelectedPosition,
     filteredPlayers,
     handleReset
   } = usePlayerFilters(players);
@@ -96,8 +85,6 @@ const Index = () => {
         setSearchTerm={setSearchTerm}
         selectedCountry={selectedCountry}
         setSelectedCountry={setSelectedCountry}
-        selectedPosition={selectedPosition}
-        setSelectedPosition={setSelectedPosition}
         handleReset={handleReset}
         teams={teams}
       />
@@ -107,20 +94,12 @@ const Index = () => {
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-sport-navy">
             {filteredPlayers.length} Player{filteredPlayers.length !== 1 ? 's' : ''} Found
-            {filteredPlayers.length > 0 && (
-              <span className="text-sm font-normal ml-2 text-gray-500">
-                (Showing {Math.min(PLAYERS_PER_PAGE, filteredPlayers.length)} per page)
-              </span>
-            )}
           </h2>
         </div>
         
         <PlayerList 
           players={filteredPlayers} 
           resetFilters={handleReset} 
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          pageSize={PLAYERS_PER_PAGE}
         />
       </main>
 

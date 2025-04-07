@@ -16,26 +16,15 @@ interface PlayerFiltersProps {
   setSearchTerm: (term: string) => void;
   selectedCountry: string;
   setSelectedCountry: (country: string) => void;
-  selectedPosition: string;
-  setSelectedPosition: (position: string) => void;
   handleReset: () => void;
   teams: Team[];
 }
-
-const POSITIONS = [
-  "Goalkeeper",
-  "Defender",
-  "Midfielder",
-  "Forward"
-];
 
 const PlayerFilters = ({ 
   searchTerm, 
   setSearchTerm, 
   selectedCountry, 
-  setSelectedCountry,
-  selectedPosition,
-  setSelectedPosition, 
+  setSelectedCountry, 
   handleReset,
   teams 
 }: PlayerFiltersProps) => {
@@ -63,22 +52,6 @@ const PlayerFilters = ({
                 {teams.map((team) => (
                   <SelectItem key={team.id} value={team.name}>
                     {team.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          
-          <div className="w-full md:w-64">
-            <Select value={selectedPosition} onValueChange={setSelectedPosition}>
-              <SelectTrigger>
-                <SelectValue placeholder="Filter by position" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all-positions">All Positions</SelectItem>
-                {POSITIONS.map((position) => (
-                  <SelectItem key={position} value={position}>
-                    {position}
                   </SelectItem>
                 ))}
               </SelectContent>
